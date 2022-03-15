@@ -47,7 +47,7 @@
           required
         ></b-form-input>
       </b-form-group>
-      <b-button @click="addUser()" type="submit" variant="primary">Submit</b-button>
+      <b-button type="submit" variant="primary">Submit</b-button>
     </b-form>
   </div>
 </template>
@@ -69,12 +69,13 @@ export default {
   methods: {
     onSubmit(event) {
       event.preventDefault();
-      alert(JSON.stringify(this.form));
+      this.addUser();
     },
     addUser() {
       Service.addUser(this.form).then((res) => {
           console.log(res)
         this.$router.push({name: "Home"});
+        this.$swal('Add successful');
       });
     },
   },

@@ -8,28 +8,36 @@
         </div>
       </template>
       <template #cell(picture)="data">
-        <b-img class="w-25"
-          :src="data.item.picture ? data.item.picture : 'https://tse4.mm.bing.net/th?id=OIP.wRtvON_8JKRQghdROw5QvQHaHa&pid=Api&P=0&w=167&h=167'"
+        <b-img
+          class="w-25"
+          :src="
+            data.item.picture
+              ? data.item.picture
+              : 'https://tse4.mm.bing.net/th?id=OIP.wRtvON_8JKRQghdROw5QvQHaHa&pid=Api&P=0&w=167&h=167'
+          "
           rounded="circle"
           alt="Circle image"
         ></b-img>
       </template>
       <template #cell(actions)="data">
-        <b-button @click="goEdit(data.item.id)" variant="success">Edit</b-button>
-        <b-button @click="deleteUser(data.item.id)" variant="danger">Delete</b-button
+        <b-button @click="goEdit(data.item.id)" variant="success"
+          >Edit</b-button
+        >
+        <b-button @click="deleteUser(data.item.id)" variant="danger"
+          >Delete</b-button
         >
       </template>
     </b-table>
     <div class="pagin">
-    <b-pagination
-      v-model="page"
-      :total-rows="totalRows"
-      :per-page="perPage"
-      align="fill"
-      size="sm"
-      class="my-0"
-      @input="getAllUsers"
-    ></b-pagination>
+      <b-pagination
+        v-model="page"
+        :total-rows="totalRows"
+        :per-page="perPage"
+        align="fill"
+        size="sm"
+        class="my-0"
+        @input="getAllUsers"
+      ></b-pagination>
     </div>
   </div>
 </template>
@@ -81,10 +89,23 @@ export default {
       this.$router.push({ name: "Edit", params: { id: userId } });
     },
     deleteUser(id) {
-      Service.deleteUser(id).then((res) => {
-         console.log(res)
-          this.getAllUsers();
-        })
+      this.$swal({
+        title: "Are you sure?",
+        text: "Are you sure that you want to leave this page?",
+        icon: "warning",
+        dangerMode: true,
+      }).then((willDelete) => {
+        if (willDelete) {
+          Service.deleteUser(id).then(() => {
+            this.$swal(
+              "Deleted!",
+              "Your imaginary file has been deleted!",
+              "success"
+            );
+            this.getAllUsers();
+          });
+        }
+      });
     },
   },
   created() {
@@ -93,7 +114,7 @@ export default {
 };
 </script>
 <style scoped>
-.pagin{
+.pagin {
   margin: auto;
   width: 50%;
   margin-bottom: 50px;

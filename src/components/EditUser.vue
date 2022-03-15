@@ -40,7 +40,7 @@
         ></b-form-input>
       </b-form-group>
     
-      <b-button @click="updateUser()" type="submit" variant="primary">Submit</b-button>
+      <b-button type="submit" variant="primary">Submit</b-button>
       <b-button type="reset" variant="danger">Reset</b-button>
     </b-form>
   </div>
@@ -62,7 +62,7 @@ export default {
   methods: {
     onSubmit(event) {
       event.preventDefault();
-      alert(JSON.stringify(this.form));
+      this.updateUser();
     },
     onReset(event) {
       event.preventDefault();
@@ -77,8 +77,8 @@ export default {
       });
     },
     updateUser() {
-      Service.editUser(this.$route.params.id, this.form).then((res) => {
-        console.log(res)
+      Service.editUser(this.$route.params.id, this.form).then(() => {
+        this.$swal('Updated successful');
         this.$router.push({name: "Home"});
       });
     },

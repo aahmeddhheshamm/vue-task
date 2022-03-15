@@ -1,6 +1,6 @@
 <template>
   <div class="home">
-    <b-button @click="addPage()" variant="primary">Add New User</b-button>
+    <b-button class="m-4" @click="addPage()" variant="primary">Add New User</b-button>
     <AllUsers /> 
   </div>
 </template>
