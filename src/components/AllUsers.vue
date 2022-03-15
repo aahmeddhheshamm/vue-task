@@ -8,19 +8,19 @@
         </div>
       </template>
       <template #cell(picture)="data">
-        <b-img
-          :src="data.item.picture"
+        <b-img class="w-25"
+          :src="data.item.picture ? data.item.picture : 'https://tse4.mm.bing.net/th?id=OIP.wRtvON_8JKRQghdROw5QvQHaHa&pid=Api&P=0&w=167&h=167'"
           rounded="circle"
           alt="Circle image"
         ></b-img>
       </template>
       <template #cell(actions)="data">
         <b-button @click="goEdit(data.item.id)" variant="success">Edit</b-button>
-        <b-button variant="danger">Delete</b-button
+        <b-button @click="deleteUser(data.item.id)" variant="danger">Delete</b-button
         >
       </template>
     </b-table>
-    
+    <div class="pagin">
     <b-pagination
       v-model="page"
       :total-rows="totalRows"
@@ -30,6 +30,7 @@
       class="my-0"
       @input="getAllUsers"
     ></b-pagination>
+    </div>
   </div>
 </template>
 
@@ -79,15 +80,23 @@ export default {
     goEdit(userId) {
       this.$router.push({ name: "Edit", params: { id: userId } });
     },
-    // deleteUser() {
-    //   Service.deleteUser(this.$route.params.id).then((res) => {
-    //     res.data.id
-    //       this.getAllUsers();
-    //     })
-    // },
+    deleteUser(id) {
+      Service.deleteUser(id).then((res) => {
+         console.log(res)
+          this.getAllUsers();
+        })
+    },
   },
   created() {
     this.getAllUsers();
   },
 };
 </script>
+<style scoped>
+.pagin{
+  margin: auto;
+  width: 50%;
+  margin-bottom: 50px;
+  margin-top: 30px;
+}
+</style>

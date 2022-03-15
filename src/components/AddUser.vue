@@ -1,6 +1,14 @@
 <template>
   <div>
-    <b-form @submit="onSubmit" @reset="onReset" v-if="show">
+    <b-form @submit="onSubmit" v-if="show">
+      <b-form-group id="input-group-2" label="Your Title:" label-for="input-2">
+        <b-form-input
+          id="input-2"
+          v-model="form.title"
+          placeholder="Enter Title"
+          required
+        ></b-form-input>
+      </b-form-group>
       <b-form-group
         id="input-group-2"
         label="Your First Name:"
@@ -39,9 +47,7 @@
           required
         ></b-form-input>
       </b-form-group>
-    
-      <b-button @click="updateUser()" type="submit" variant="primary">Submit</b-button>
-      <b-button type="reset" variant="danger">Reset</b-button>
+      <b-button @click="addUser()" type="submit" variant="primary">Submit</b-button>
     </b-form>
   </div>
 </template>
@@ -52,6 +58,7 @@ export default {
   data() {
     return {
       form: {
+        title: "",
         firstName: "",
         lastName: "",
         email: "",
@@ -64,27 +71,12 @@ export default {
       event.preventDefault();
       alert(JSON.stringify(this.form));
     },
-    onReset(event) {
-      event.preventDefault();
-      // Reset our form values
-      this.form.firstName = "";
-      this.form.lastName = "";
-      this.form.email = "";
-    },
-    getUser() {
-      Service.getUserInfo(this.$route.params.id).then((res) => {
-        this.form = res.data;
-      });
-    },
-    updateUser() {
-      Service.editUser(this.$route.params.id, this.form).then((res) => {
-        console.log(res)
+    addUser() {
+      Service.addUser(this.form).then((res) => {
+          console.log(res)
         this.$router.push({name: "Home"});
       });
     },
-  },
-  created() {
-    this.getUser();
   },
 };
 </script>
